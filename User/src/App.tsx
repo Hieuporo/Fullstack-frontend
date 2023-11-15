@@ -1,61 +1,28 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { SnackbarProvider } from 'notistack';
-
-// material core
-import { MuiThemeProvider } from '@material-ui/core/styles';
-
-// context
-import { useGlobalContext } from 'context/GlobalContext';
-
-// containers
-import Auth from 'containers/Auth';
-
-// atomic
-import LinearProgress from 'components/atoms/LinearProgress';
-import Dialog from 'components/molecules/Dialog';
-import SnackBarBase from 'components/molecules/SnackBar';
-
-// themes
-import themes from 'themes';
-import { THEMES } from 'configs';
-
-// routes
-import Routes from 'routes/Routes';
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  // 0: light, 1: dark
-  const { i18n } = useTranslation();
-  const { modeTheme, language } = useGlobalContext();
-  const type = modeTheme === THEMES.LIGHT ? 0 : 1;
-
-  useEffect(() => {
-    i18n.changeLanguage(language);
-  }, [language, i18n]);
+  const [count, setCount] = useState(0);
 
   return (
-    // @ts-ignore
-    <MuiThemeProvider theme={themes(type)}>
-      <Router>
-        <Auth>
-          {/* @ts-ignore */}
-          <SnackbarProvider
-            autoHideDuration={process.env.REACT_APP_AUTO_HIDE_SNACKBAR || 3000}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-            maxSnack={process.env.REACT_APP_MAX_SNACKBAR || 3}
-          >
-            <LinearProgress />
-            <Dialog />
-            <Routes />
-            <SnackBarBase />
-          </SnackbarProvider>
-        </Auth>
-      </Router>
-    </MuiThemeProvider>
+    <>
+      <div>
+        <a href="https://vitejs.dev" target="_blank"></a>
+        <a href="https://react.dev" target="_blank"></a>
+      </div>
+      <h1>Vite + React</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+    </>
   );
 }
 
