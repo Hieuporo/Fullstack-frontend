@@ -733,10 +733,10 @@ ol {
 
 /* Section Title */
 .section-title {
-  @apply text-center relative z-[5] relative mb-10 px-[300px] py-0;
+  @apply text-center z-[5] relative mb-10 px-[300px] py-0;
 }
 .section-title h2 {
-  @apply text-3xl leading-[35px] capitalize relative font-extrabold relative mb-5 pb-5 before:absolute before:content-[""] before:bg-[#0167f3] before:h-0.5 before:w-[50px] before:ml-[-25px] before:rounded-sm before:left-2/4 before:bottom-0;
+  @apply text-3xl leading-[35px] capitalize font-extrabold relative mb-5 pb-5 before:absolute before:content-[""] before:bg-[#0167f3] before:h-0.5 before:w-[50px] before:ml-[-25px] before:rounded-sm before:left-2/4 before:bottom-0;
 }
 .section-title p {
   @apply text-sm;
@@ -917,7 +917,7 @@ ol {
 }
 
 .header {
-  @apply w-full relative w-full;
+  @apply relative w-full;
   background: #fff;
 }
 .header .topbar {
@@ -980,7 +980,7 @@ ol {
   @apply inline-block whitespace-nowrap;
 }
 .header .topbar .top-end .user-login li {
-  @apply inline-block whitespace-nowrap px-2.5 py-0 border-r-[rgba(255,255,255,0.459)] border-r border-solid first:pr-3 last:mr-0 last:pr-0 last:border-r-[none];
+  @apply inline-block whitespace-nowrap px-2.5 py-0;
 }
 .header .topbar .top-end .user-login li a {
   @apply text-white font-medium text-sm whitespace-nowrap hover:text-[#0167f3];
@@ -1250,7 +1250,7 @@ ol {
   -webkit-transition: all 0.3s linear;
 }
 .header .main-menu-search .search-btn button {
-  @apply bg-[#0167f3] text-white w-[45px] h-[45px] text-xl transition-all duration-[0.4s] ease-[ease] text-lg -ml-0.5 p-0 rounded-[0_4px_4px_0] border-0 hover:text-white hover:bg-[#081828];
+  @apply bg-[#0167f3] text-white w-[45px] h-[45px] transition-all duration-[0.4s] ease-[ease] text-lg -ml-0.5 p-0 rounded-[0_4px_4px_0] border-0 hover:text-white hover:bg-[#081828];
   -webkit-transition: all 0.4s ease;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -1280,7 +1280,7 @@ ol {
     @apply text-[#0167f3];
   }
   .header .navbar-nav .nav-item a {
-    @apply px-4 py-3 before:hidden text-[#051441] flex justify-between px-0 py-2.5 after:opacity-100 after:visible text-sm hover:text-[#0167f3];
+    @apply before:hidden text-[#051441] flex justify-between px-0 py-2.5 after:opacity-100 after:visible text-sm hover:text-[#0167f3];
   }
   .header .navbar-nav .nav-item .sub-menu {
     @apply static w-full opacity-100 visible shadow-none mx-[15px] p-0 border-[none];
@@ -1334,7 +1334,7 @@ ol {
     @apply text-[#0167f3];
   }
   .header .navbar-nav .nav-item a {
-    @apply px-4 py-3 before:hidden text-[#051441] flex justify-between px-0 py-2.5 after:opacity-100 after:visible text-sm hover:text-[#0167f3];
+    @apply px-4 py-3 before:hidden text-[#051441] flex justify-between after:opacity-100 after:visible text-sm hover:text-[#0167f3];
   }
   .header .navbar-nav .nav-item .sub-menu {
     @apply static w-full opacity-100 visible shadow-none mx-[15px] p-0 border-[none];
@@ -1548,7 +1548,7 @@ ol {
   @apply text-[#0167f3];
 }
 .navbar-nav .nav-item a {
-  @apply text-sm text-[#081828] transition-all duration-[0.3s] ease-[ease-out] delay-[0s] relative inline-flex items-center font-semibold transition-all duration-[0.3s] ease-[ease-out] delay-[0s] relative capitalize px-0 py-5;
+  @apply text-sm text-[#081828] inline-flex items-center font-semibold transition-all duration-[0.3s] ease-[ease-out] delay-[0s] relative capitalize px-0 py-5;
   -webkit-transition: all 0.3s ease-out 0s;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -1625,7 +1625,7 @@ ol {
   @apply text-[#0167f3];
 }
 .navbar-nav .nav-item .sub-menu > li > a {
-  @apply font-normal block text-sm text-[#222] font-normal px-[15px] py-3;
+  @apply block text-sm text-[#222] font-normal px-[15px] py-3;
 }
 .navbar-nav .nav-item .sub-menu > li:first-child a {
   @apply border-[none];
@@ -1674,7 +1674,7 @@ ol {
   @apply right-0;
 }
 .hero-area .tns-controls button {
-  @apply w-[35px] h-[60px] cursor-pointer z-[2] text-white text-[17px] rounded transition-all duration-[0.3s] ease-[ease-out] delay-[0s] absolute z-[99] mt-[-30px] px-[5px] py-0.5 rounded-none border-[none] top-2/4 hover:bg-[#081828] hover:text-white first:rounded-[0_4px_4px_0] first:-left-10 last:rounded-[4px_0px_0px_4px] last:-right-10;
+  @apply w-[35px] h-[60px] cursor-pointer text-white text-[17px] transition-all duration-[0.3s] ease-[ease-out] delay-[0s] absolute z-[99] mt-[-30px] px-[5px] py-0.5 rounded-none border-[none] top-2/4 hover:bg-[#081828] hover:text-white first:rounded-[0_4px_4px_0] first:-left-10 last:rounded-[4px_0px_0px_4px] last:-right-10;
   background: #0167f3;
   -webkit-transition: all 0.3s ease-out 0s;
 }
@@ -1774,7 +1774,7 @@ ol {
   @apply mt-[30px];
 }
 .hero-area .hero-small-banner {
-  @apply h-[244px] relative bg-no-repeat bg-contain bg-cover;
+  @apply h-[244px] relative bg-no-repeat bg-cover;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .hero-area .hero-small-banner {
