@@ -10,8 +10,7 @@ import { RootState } from "../stores/store";
 import { AuthState } from "../types/auth.type";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3500",
-  credentials: "include",
+  baseUrl: "https://localhost:7020/api",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;
     if (token) {
@@ -34,7 +33,7 @@ const baseQueryWithReauth: BaseQueryFn<
     const authState = (api.getState() as RootState).auth;
     const { accessToken, refreshToken } = authState;
 
-    const refreshResult = await baseQuery("/refresh", api, {
+    const refreshResult = await baseQuery("/Account/Refresh", api, {
       method: "POST",
       body: { refreshToken, accessToken },
       headers: {
@@ -42,7 +41,6 @@ const baseQueryWithReauth: BaseQueryFn<
       },
     });
 
-    console.log(refreshResult);
     if (refreshResult?.data) {
       const { accessToken, refreshToken, user } =
         refreshResult.data as AuthState;
