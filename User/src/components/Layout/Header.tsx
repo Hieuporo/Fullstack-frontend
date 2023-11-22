@@ -13,7 +13,7 @@ const Header = () => {
     <header className="header navbar-area">
       {/* Start Topbar */}
       <div className="topbar">
-        <div className="container mx-auto sm:px-4">
+        <div className="container mx-auto sm:px-24">
           <div className="flex flex-wrap  items-center">
             <div className="lg:w-1/3 pr-4 pl-4 md:w-1/3 w-full">
               <div className="top-left">
@@ -59,7 +59,7 @@ const Header = () => {
       {/* End Topbar */}
       {/* Start Header Middle */}
       <div className="header-middle">
-        <div className="container mx-auto sm:px-4">
+        <div className="container mx-auto sm:px-24">
           <div className="flex flex-wrap  items-center">
             <div className="lg:w-1/4 pr-4 pl-4 md:w-1/4 w-3/5">
               {/* Start Header Logo */}
@@ -206,7 +206,7 @@ const Header = () => {
       </div>
       {/* End Header Middle */}
       {/* Start Header Bottom */}
-      <div className="container mx-auto sm:px-4 my-3">
+      <div className="container mx-auto sm:px-24 my-3">
         <div className="flex flex-wrap  items-center">
           <div className="lg:w-2/3 pr-4 pl-4 md:w-1/2 w-full">
             <div className="nav-inner">

@@ -7,15 +7,19 @@ import { persistor, store } from "./stores/store.ts";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { BrowserRouter } from "react-router-dom";
+import { ToasterProvider } from "./providers/ToasterProvider.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <React.StrictMode>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </React.StrictMode>
-    </PersistGate>
-  </Provider>
+  <>
+    <ToasterProvider />
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <React.StrictMode>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </React.StrictMode>
+      </PersistGate>
+    </Provider>
+  </>
 );

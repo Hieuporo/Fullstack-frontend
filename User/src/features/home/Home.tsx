@@ -1,85 +1,21 @@
+import HomeSlider from "./components/HomeSlider";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import HelpCenterIcon from "@mui/icons-material/HelpCenter";
+import PaymentIcon from "@mui/icons-material/Payment";
+import ReplayCircleFilledIcon from "@mui/icons-material/ReplayCircleFilled";
+import { ArrowSmallUpIcon } from "@heroicons/react/24/outline";
 const Home = () => {
   return (
     <>
       <section className="hero-area">
-        <div className="container mx-auto sm:px-4">
+        <div className="container mx-auto sm:px-24">
           <div className="flex flex-wrap ">
             <div className="lg:w-2/3 pr-4 pl-4 w-full custom-padding-right">
-              <div className="slider-head">
-                {/* Start Hero Slider */}
-                <div className="hero-slider">
-                  {/* Start Single Slider */}
-                  <div
-                    className="single-slider"
-                    style={{
-                      backgroundImage:
-                        "url(src/assets/images/hero/slider-bg1.jpg)",
-                    }}
-                  >
-                    <div className="content">
-                      <h2>
-                        <span>No restocking fee ($35 savings)</span>
-                        M75 Sport Watch
-                      </h2>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua.
-                      </p>
-                      <h3>
-                        <span>Now Only</span> $320.99
-                      </h3>
-                      <div className="button">
-                        <a
-                          href="product-grids.html"
-                          className="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline"
-                        >
-                          Shop Now
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  {/* End Single Slider */}
-                  {/* Start Single Slider */}
-                  <div
-                    className="single-slider"
-                    style={{
-                      backgroundImage:
-                        "url(src/assets/images/hero/slider-bg2.jpg)",
-                    }}
-                  >
-                    <div className="content">
-                      <h2>
-                        <span>Big Sale Offer</span>
-                        Get the Best Deal on CCTV Camera
-                      </h2>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua.
-                      </p>
-                      <h3>
-                        <span>Combo Only:</span> $590.00
-                      </h3>
-                      <div className="button">
-                        <a
-                          href="product-grids.html"
-                          className="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline"
-                        >
-                          Shop Now
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  {/* End Single Slider */}
-                </div>
-                {/* End Hero Slider */}
-              </div>
+              <HomeSlider />
             </div>
             <div className="lg:w-1/3 pr-4 pl-4 w-full">
               <div className="flex flex-wrap ">
-                <div className="lg:w-full pr-4 pl-4 md:w-1/2 pr-4 pl-4 w-full md-custom-padding">
-                  {/* Start Small Banner */}
+                <div className="lg:w-full md:w-1/2 pr-4 pl-4 w-full md-custom-padding">
                   <div
                     className="hero-small-banner"
                     style={{
@@ -107,7 +43,7 @@ const Home = () => {
                       </p>
                       <div className="button">
                         <a
-                          className="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline"
+                          className="inline-block align-middle text-center select-none border text-white font-normal whitespace-no-wrap rounded mt-1 py-1 px-3 leading-normal no-underline"
                           href="product-grids.html"
                         >
                           Shop Now
@@ -125,7 +61,7 @@ const Home = () => {
       {/* End Hero Area */}
       {/* Start Trending Product Area */}
       <section className="trending-product section" style={{ marginTop: 12 }}>
-        <div className="container mx-auto sm:px-4">
+        <div className="container mx-auto sm:px-24">
           <div className="flex flex-wrap ">
             <div className="w-full">
               <div className="section-title">
@@ -517,7 +453,7 @@ const Home = () => {
       </section>
 
       <section className="banner section">
-        <div className="container mx-auto sm:px-4">
+        <div className="container mx-auto sm:px-24">
           <div className="flex flex-wrap ">
             <div className="lg:w-1/2 pr-4 pl-4 md:w-1/2 w-full">
               <div
@@ -536,7 +472,7 @@ const Home = () => {
                   <div className="button">
                     <a
                       href="product-grids.html"
-                      className="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline"
+                      className="inline-block align-middle text-black text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline"
                     >
                       View Details
                     </a>
@@ -561,7 +497,7 @@ const Home = () => {
                   <div className="button">
                     <a
                       href="product-grids.html"
-                      className="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline"
+                      className="inline-block align-middle text-black text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline"
                     >
                       Shop Now
                     </a>
@@ -575,11 +511,11 @@ const Home = () => {
       {/* End Banner Area */}
       {/* Start Shipping Info */}
       <section className="shipping-info">
-        <div className="container mx-auto sm:px-4">
+        <div className="container mx-auto sm:px-24">
           <ul>
             <li>
               <div className="media-icon">
-                <i className="lni lni-delivery" />
+                <LocalShippingIcon color="primary" fontSize="large" />
               </div>
               <div className="flex-1">
                 <h5>Free Shipping</h5>
@@ -589,7 +525,7 @@ const Home = () => {
             {/* Money Return */}
             <li>
               <div className="media-icon">
-                <i className="lni lni-support" />
+                <HelpCenterIcon color="primary" fontSize="large" />
               </div>
               <div className="flex-1">
                 <h5>24/7 Support.</h5>
@@ -599,7 +535,7 @@ const Home = () => {
             {/* Support 24/7 */}
             <li>
               <div className="media-icon">
-                <i className="lni lni-credit-cards" />
+                <PaymentIcon color="primary" fontSize="large" />
               </div>
               <div className="flex-1">
                 <h5>Online Payment.</h5>
@@ -609,7 +545,7 @@ const Home = () => {
             {/* Safe Payment */}
             <li>
               <div className="media-icon">
-                <i className="lni lni-reload" />
+                <ReplayCircleFilledIcon color="primary" fontSize="large" />
               </div>
               <div className="flex-1">
                 <h5>Easy Return.</h5>
@@ -620,7 +556,7 @@ const Home = () => {
         </div>
       </section>
       <a href="#" className="scroll-top">
-        <i className="lni lni-chevron-up" />
+        <ArrowSmallUpIcon />
       </a>
     </>
   );
