@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import Login from "../features/auth/Login";
 import Home from "../features/home/Home";
 import { ContentLayout } from "../components/Layout/ContentLayout";
+import Register from "../features/auth/Register";
+import EmailConfirm from "../features/auth/EmailConfirm";
 
 const Router = () => {
   return (
@@ -15,7 +17,23 @@ const Router = () => {
             </ContentLayout>
           }
         />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={
+            <ContentLayout>
+              <Login />
+            </ContentLayout>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <ContentLayout>
+              <Register />
+            </ContentLayout>
+          }
+        />
+        <Route path="/confirmemail" element={<EmailConfirm />} />
       </Routes>
     </div>
   );

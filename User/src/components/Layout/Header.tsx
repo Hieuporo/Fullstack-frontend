@@ -7,8 +7,19 @@ import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUser } from "../../features/auth/authSlice";
+import { logOut } from "../../features/auth/authSlice";
 
 const Header = () => {
+  const user = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    dispatch(logOut());
+  };
+
   return (
     <header className="header navbar-area">
       {/* Start Topbar */}
@@ -17,7 +28,9 @@ const Header = () => {
           <div className="flex flex-wrap  items-center">
             <div className="lg:w-1/3 pr-4 pl-4 md:w-1/3 w-full">
               <div className="top-left">
-                <h6 className="text-white">Hieu Pro</h6>
+                <Link to={"/"} className="text-white text-base">
+                  Hieu Pro
+                </Link>
               </div>
             </div>
             <div className="lg:w-1/3 pr-4 pl-4 md:w-1/3 w-full">
@@ -37,20 +50,29 @@ const Header = () => {
             </div>
             <div className="lg:w-1/3 pr-4 pl-4 md:w-1/3 w-full">
               <div className="top-end">
-                <div className="user">
-                  <div className="flex">
-                    <div className="mr-2">Hello Hieu</div>
-                    <UserCircleIcon className="h-5 w-5" />
-                  </div>
-                </div>
-                <ul className="user-login ">
-                  <li className="border-r border-solid first:pr-3 last:mr-0 last:pr-0 last:border-r-[none]">
-                    <a>Sign In</a>
-                  </li>
-                  <li className="border-none">
-                    <a>Register</a>
-                  </li>
-                </ul>
+                {user ? (
+                  <ul className="user-login ">
+                    <li className="border-r text-white border-solid first:pr-3 last:mr-0 last:pr-0 last:border-r-[none]">
+                      <div className="flex items-center">
+                        <div className="mr-2">Hello {user.name}</div>
+                        <UserCircleIcon className="h-5 w-5" />
+                      </div>
+                    </li>
+
+                    <li className="border-none text-white">
+                      <button onClick={logout}>Log out</button>
+                    </li>
+                  </ul>
+                ) : (
+                  <ul className="user-login ">
+                    <li className="border-r border-solid first:pr-3 last:mr-0 last:pr-0 last:border-r-[none]">
+                      <Link to="/login">Sign In</Link>
+                    </li>
+                    <li className="border-none">
+                      <Link to="/register">Register</Link>
+                    </li>
+                  </ul>
+                )}
               </div>
             </div>
           </div>

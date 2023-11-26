@@ -2,12 +2,16 @@ import { FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "./authApiSlice";
 import { setCredentials } from "./authSlice";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const dispatch = useDispatch();
   const [login, { isLoading }] = useLoginMutation();
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -15,10 +19,12 @@ const Login = () => {
     try {
       const userData = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...userData }));
+      toast.success("Successfully logged in");
       setEmail("");
       setPassword("");
-    } catch (err) {
-      console.log(err);
+      navigate("/");
+    } catch (err: any) {
+      toast.error(err.data.ErrorMessage);
     }
   };
 

@@ -24,7 +24,7 @@ const HomeSlider = () => {
           {slides.map((slide, index) => (
             <div
               className="single-slider"
-              tabIndex={index}
+              key={index}
               style={{
                 backgroundImage: `url(${slide.url})`,
               }}
