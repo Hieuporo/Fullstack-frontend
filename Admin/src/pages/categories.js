@@ -20,7 +20,6 @@ import {
 } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -28,6 +27,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import publicAxiosClient from "src/configs/httpClient/publicAxiosClient";
+import privateAxiosClient from "src/configs/httpClient/privateAxiosClient";
 
 const Page = () => {
   const [categories, setCategories] = useState([]);
@@ -81,11 +82,7 @@ const Page = () => {
 
   const getCategories = async () => {
     try {
-      const { data } = await axios.get("https://localhost:7020/api/Category", {
-        headers: {
-          Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-        },
-      });
+      const { data } = await publicAxiosClient.get("https://localhost:7020/api/Category");
 
       setCategories(data);
     } catch (error) {}
@@ -94,19 +91,11 @@ const Page = () => {
   const createCategories = async () => {
     if (name != null && description != null && imageUrl != null) {
       try {
-        await axios.post(
-          "https://localhost:7020/api/Category",
-          {
-            name,
-            description,
-            imageUrl,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-            },
-          }
-        );
+        await privateAxiosClient.post("Category", {
+          name,
+          description,
+          imageUrl,
+        });
 
         getCategories();
       } catch (error) {}

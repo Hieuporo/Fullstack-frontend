@@ -32,6 +32,8 @@ import axios from "axios";
 import { CheckBox } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { ProductCardItem } from "src/sections/products/product-item-card";
+import privateAxiosClient from "src/configs/httpClient/privateAxiosClient";
+import publicAxiosClient from "src/configs/httpClient/publicAxiosClient";
 
 const Page = () => {
   const router = useRouter();
@@ -88,21 +90,13 @@ const Page = () => {
       product != null
     ) {
       try {
-        await axios.post(
-          "https://localhost:7020/api/Product/productitem",
-          {
-            productId: product.id,
-            name,
-            imageUrl,
-            quantityInStock,
-            price,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-            },
-          }
-        );
+        await privateAxiosClient.post("Product/productitem", {
+          productId: product.id,
+          name,
+          imageUrl,
+          quantityInStock,
+          price,
+        });
 
         getProduct();
         closepopup();
@@ -114,22 +108,14 @@ const Page = () => {
 
   const updateProductItem = async () => {
     try {
-      await axios.put(
-        "https://localhost:7020/api/Product/productitem",
-        {
-          id: currentItemId,
-          productId: router.query.id,
-          name: name,
-          imageUrl: imageUrl,
-          quantityInStock: quantityInStock,
-          price: price,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-          },
-        }
-      );
+      await privateAxiosClient.put("Product/productitem", {
+        id: currentItemId,
+        productId: router.query.id,
+        name: name,
+        imageUrl: imageUrl,
+        quantityInStock: quantityInStock,
+        price: price,
+      });
 
       getProduct();
       closepopupUpdate();
@@ -139,11 +125,7 @@ const Page = () => {
 
   const deleteProductItem = async () => {
     try {
-      await axios.delete(`https://localhost:7020/api/Product/productitem/${currentItemId}`, {
-        headers: {
-          Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-        },
-      });
+      await privateAxiosClient.delete(`Product/productitem/${currentItemId}`);
 
       getProduct();
       closepopupDelete();
@@ -188,11 +170,7 @@ const Page = () => {
 
   const getProduct = async () => {
     try {
-      const { data } = await axios.get(`https://localhost:7020/api/Product/${router.query.id}`, {
-        headers: {
-          Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-        },
-      });
+      const { data } = await publicAxiosClient(`Product/${router.query.id}`, {});
 
       setProduct(data);
     } catch (error) {

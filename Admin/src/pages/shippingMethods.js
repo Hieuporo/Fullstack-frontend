@@ -20,7 +20,6 @@ import {
 } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -28,6 +27,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import publicAxiosClient from "src/configs/httpClient/publicAxiosClient";
+import privateAxiosClient from "src/configs/httpClient/privateAxiosClient";
 
 const Page = () => {
   const [shippingMethods, setShippingMethods] = useState([]);
@@ -44,12 +45,7 @@ const Page = () => {
 
   const getShippingMethods = async () => {
     try {
-      const { data } = await axios.get("https://localhost:7020/api/ShippingMethod", {
-        headers: {
-          Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-        },
-      });
-
+      const { data } = await publicAxiosClient.get("ShippingMethod");
       setShippingMethods(data);
     } catch (error) {}
   };
@@ -57,18 +53,10 @@ const Page = () => {
   const createShippingMethod = async () => {
     if (name != null && price != null) {
       try {
-        await axios.post(
-          "https://localhost:7020/api/ShippingMethod",
-          {
-            name,
-            price,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-            },
-          }
-        );
+        await privateAxiosClient.post("https://localhost:7020/api/ShippingMethod", {
+          name,
+          price,
+        });
 
         getShippingMethods();
         closepopup();

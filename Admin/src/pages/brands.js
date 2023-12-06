@@ -28,6 +28,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import publicAxiosClient from "src/configs/httpClient/publicAxiosClient";
+import privateAxiosClient from "src/configs/httpClient/privateAxiosClient";
 
 const Page = () => {
   const [brands, setBrands] = useState([]);
@@ -43,11 +45,7 @@ const Page = () => {
 
   const getBrands = async () => {
     try {
-      const { data } = await axios.get("https://localhost:7020/api/Brand", {
-        headers: {
-          Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-        },
-      });
+      const { data } = await publicAxiosClient.get("Brand");
 
       setBrands(data);
     } catch (error) {}
@@ -57,17 +55,9 @@ const Page = () => {
   const createBrand = async () => {
     if (name != null) {
       try {
-        await axios.post(
-          "https://localhost:7020/api/Brand",
-          {
-            name,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-            },
-          }
-        );
+        await privateAxiosClient.post("Brand", {
+          name,
+        });
 
         getBrands();
       } catch (error) {}

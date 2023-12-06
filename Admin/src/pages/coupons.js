@@ -20,7 +20,6 @@ import {
 } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -28,6 +27,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import privateAxiosClient from "src/configs/httpClient/privateAxiosClient";
+import publicAxiosClient from "src/configs/httpClient/publicAxiosClient";
 
 const Page = () => {
   const [coupons, setCoupons] = useState([]);
@@ -44,11 +45,7 @@ const Page = () => {
   };
   const getCoupons = async () => {
     try {
-      const { data } = await axios.get("https://localhost:7020/api/Coupon", {
-        headers: {
-          Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-        },
-      });
+      const { data } = await publicAxiosClient.get("Coupon");
 
       setCoupons(data);
     } catch (error) {}
@@ -57,19 +54,11 @@ const Page = () => {
   const createCoupons = async () => {
     if (couponCode != null && minAmount != null && discountAmount != null) {
       try {
-        await axios.post(
-          "https://localhost:7020/api/Coupon",
-          {
-            couponCode,
-            minAmount,
-            discountAmount,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-            },
-          }
-        );
+        await privateAxiosClient.post("Coupon", {
+          couponCode,
+          minAmount,
+          discountAmount,
+        });
 
         getCoupons();
       } catch (error) {}
@@ -179,7 +168,6 @@ const Page = () => {
                         </TableCell>
                         <TableCell align="right">{coupon.couponCode}</TableCell>
                         <TableCell align="right">{coupon.minAmount}</TableCell>
-                        <TableCell align="right">{coupon.discountAmount}</TableCell>
                         <TableCell align="right">{coupon.discountAmount}</TableCell>
                       </TableRow>
                     ))}

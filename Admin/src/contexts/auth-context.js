@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useReducer, useRef } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import publicAxiosClient from "src/configs/httpClient/publicAxiosClient";
 
 const HANDLERS = {
   INITIALIZE: "INITIALIZE",
@@ -35,13 +36,15 @@ const handlers = {
   },
   [HANDLERS.SIGN_IN]: (state, action) => {
     const user = action.payload;
-    const token = action.payload;
+    const refreshToken = action.payload;
+    const accessToken = action.payload;
 
     return {
       ...state,
       isAuthenticated: true,
       user,
-      token,
+      refreshToken,
+      accessToken,
     };
   },
   [HANDLERS.SIGN_OUT]: (state) => {
@@ -49,7 +52,8 @@ const handlers = {
       ...state,
       isAuthenticated: false,
       user: null,
-      token: null,
+      refreshToken: null,
+      accessToken: null,
     };
   },
 };
@@ -77,8 +81,8 @@ export const AuthProvider = (props) => {
     let isAuthenticated = false;
     let userInfo;
     try {
-      isAuthenticated = window.sessionStorage.getItem("authenticated") === "true";
-      userInfo = JSON.parse(window.sessionStorage.getItem("user"));
+      isAuthenticated = window.localStorage.getItem("authenticated") === "true";
+      userInfo = JSON.parse(window.localStorage.getItem("user"));
     } catch (err) {
       console.error(err);
     }
@@ -86,7 +90,6 @@ export const AuthProvider = (props) => {
     if (isAuthenticated) {
       const user = {
         id: userInfo.id,
-        avatar: "/assets/avatars/avatar-anika-visser.png",
         name: userInfo.name,
         email: userInfo.email,
       };
@@ -110,68 +113,45 @@ export const AuthProvider = (props) => {
     []
   );
 
-  const skip = () => {
-    try {
-      window.sessionStorage.setItem("authenticated", "true");
-    } catch (err) {
-      console.error(err);
-    }
-
-    const user = {
-      id: "5e86809283e28b96d2d38537",
-      avatar: "/assets/avatars/avatar-anika-visser.png",
-      name: "Anika Visser",
-      email: "anika.visser@devias.io",
-    };
-
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user,
-    });
-  };
-
   const signIn = async (email, password) => {
     if (email == null || password == null) {
       throw new Error("Please check your email and password");
     }
 
     try {
-      const response = await axios.post(`https://localhost:7020/api/Account/login`, {
+      const response = await publicAxiosClient.post(`/Account/Login`, {
         email: email,
         password: password,
       });
 
-      const { id, userName, token } = response.data;
+      const { accessToken, refreshToken, user } = response.data;
 
-      const user = {
-        id: id,
-        avatar: "/assets/avatars/avatar-anika-visser.png",
-        name: userName,
-        email: email,
-      };
+      if (!user.roles.includes("Admin")) {
+        console.log("Only admin can access");
+        return;
+      }
 
-      window.sessionStorage.setItem("user", JSON.stringify(user));
-      window.sessionStorage.setItem("authenticated", "true");
-      window.sessionStorage.setItem("token", token);
+      window.localStorage.setItem("user", JSON.stringify(user));
+      window.localStorage.setItem("accessToken", accessToken);
+      window.localStorage.setItem("refreshToken", refreshToken);
+      window.localStorage.setItem("authenticated", "true");
 
       dispatch({
         type: HANDLERS.SIGN_IN,
         payload: user,
-        token: token,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
       });
     } catch (err) {
       console.error(err);
     }
   };
 
-  const signUp = async (email, name, password) => {
-    throw new Error("Sign up is not implemented");
-  };
-
   const signOut = () => {
-    window.sessionStorage.clear("user");
-    window.sessionStorage.clear("authenticated");
-    window.sessionStorage.clear("token");
+    window.localStorage.clear("user");
+    window.localStorage.clear("authenticated");
+    window.localStorage.clear("accessToken");
+    window.localStorage.clear("refreshToken");
 
     dispatch({
       type: HANDLERS.SIGN_OUT,
@@ -182,9 +162,7 @@ export const AuthProvider = (props) => {
     <AuthContext.Provider
       value={{
         ...state,
-        skip,
         signIn,
-        signUp,
         signOut,
       }}
     >

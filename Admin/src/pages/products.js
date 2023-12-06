@@ -28,8 +28,8 @@ import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { ProductCard } from "src/sections/products/product-card";
 import { ProductsSearch } from "src/sections/products/products-search";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { CheckBox } from "@mui/icons-material";
+import privateAxiosClient from "src/configs/httpClient/privateAxiosClient";
+import publicAxiosClient from "src/configs/httpClient/publicAxiosClient";
 
 const Page = () => {
   const [searchProduct, setSearchProduct] = useState("");
@@ -97,21 +97,13 @@ const Page = () => {
       imageUrl != null
     ) {
       try {
-        await axios.post(
-          "https://localhost:7020/api/Product",
-          {
-            categoryId,
-            brandId,
-            name,
-            description,
-            imageUrl,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-            },
-          }
-        );
+        await privateAxiosClient.post("Product", {
+          categoryId,
+          brandId,
+          name,
+          description,
+          imageUrl,
+        });
 
         getProducts();
         closepopup();
@@ -123,22 +115,14 @@ const Page = () => {
 
   const updateProduct = async () => {
     try {
-      await axios.put(
-        "https://localhost:7020/api/Product",
-        {
-          categoryId,
-          brandId,
-          name,
-          description,
-          imageUrl,
-          id: currentId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-          },
-        }
-      );
+      await privateAxiosClient.put("Product", {
+        categoryId,
+        brandId,
+        name,
+        description,
+        imageUrl,
+        id: currentId,
+      });
 
       getProducts();
       closepopupUpdate();
@@ -149,11 +133,7 @@ const Page = () => {
 
   const deleteProduct = async () => {
     try {
-      await axios.delete(`https://localhost:7020/api/Product/${currentId}`, {
-        headers: {
-          Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-        },
-      });
+      await privateAxiosClient.delete(`Product/${currentId}`);
 
       getProducts();
       closepopupDelete();
@@ -208,13 +188,8 @@ const Page = () => {
 
   const getProducts = async () => {
     try {
-      const { data } = await axios.get(
-        `https://localhost:7020/api/Product?Page=1&PageSize=9&SearchTerm=${searchProduct}`,
-        {
-          headers: {
-            Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-          },
-        }
+      const { data } = await publicAxiosClient.get(
+        `Product?Page=1&PageSize=9&SearchTerm=${searchProduct}`
       );
 
       console.log(data);
@@ -226,11 +201,7 @@ const Page = () => {
 
   const getCategories = async () => {
     try {
-      const { data } = await axios.get("https://localhost:7020/api/Category", {
-        headers: {
-          Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-        },
-      });
+      const { data } = await publicAxiosClient.get("Category");
 
       setCategories(data);
     } catch (error) {}
@@ -238,11 +209,7 @@ const Page = () => {
 
   const getBrands = async () => {
     try {
-      const { data } = await axios.get("https://localhost:7020/api/Brand", {
-        headers: {
-          Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-        },
-      });
+      const { data } = await publicAxiosClient.get("Brand");
 
       setBrands(data);
     } catch (error) {}

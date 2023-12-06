@@ -28,6 +28,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { ProductCard } from "src/sections/products/product-card";
 import Link from "next/link";
+import privateAxiosClient from "src/configs/httpClient/privateAxiosClient";
 
 const style = {
   position: "absolute",
@@ -54,12 +55,7 @@ const Page = () => {
   };
   const getOrders = async () => {
     try {
-      const { data } = await axios.get("https://localhost:7020/api/Order/admin", {
-        headers: {
-          Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-        },
-      });
-      console.log(data);
+      const { data } = await privateAxiosClient.get("Order/admin");
       setOrders(data);
     } catch (error) {}
   };

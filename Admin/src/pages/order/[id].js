@@ -30,6 +30,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { ProductCardItem } from "src/sections/products/product-item-card";
 import { OrderDetail } from "src/sections/order/order-detail";
+import privateAxiosClient from "src/configs/httpClient/privateAxiosClient";
 
 const Page = () => {
   const router = useRouter();
@@ -38,15 +39,7 @@ const Page = () => {
 
   const getProduct = async () => {
     try {
-      const { data } = await axios.get(
-        `https://localhost:7020/api/Order/admin/${router.query.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${window.sessionStorage.getItem("token")}`,
-          },
-        }
-      );
-      console.log(data);
+      const { data } = await privateAxiosClient.get(`Order/admin/${router.query.id}`);
       setOrder(data);
     } catch (error) {
       console.log(error);
