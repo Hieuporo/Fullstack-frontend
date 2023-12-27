@@ -11,11 +11,14 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../features/auth/authSlice";
 import { logOut } from "../../features/auth/authSlice";
+import { useGetCategoriesQuery } from "../../features/home/homeApiSlice";
+import { Category } from "../../types/index.type";
 
 const Header = () => {
+  const { data: categories } = useGetCategoriesQuery();
+
   const user = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
-
   const logout = () => {
     dispatch(logOut());
   };
@@ -82,7 +85,7 @@ const Header = () => {
       {/* Start Header Middle */}
       <div className="header-middle">
         <div className="container mx-auto sm:px-24">
-          <div className="flex flex-wrap  items-center">
+          <div className="flex flex-wrap items-center justify-between">
             <div className="lg:w-1/4 pr-4 pl-4 md:w-1/4 w-3/5">
               {/* Start Header Logo */}
               <a className="inline-block pt-1 pb-1 mr-4 text-lg whitespace-no-wrap w-48">
@@ -130,96 +133,30 @@ const Header = () => {
               </div>
               {/* End Main Menu Search */}
             </div>
-            <div className="lg:w-1/3 pr-4 pl-4 md:w-1/5 w-2/5">
-              <div className="middle-right-area">
-                <div className="nav-hotline">
-                  <div className="flex items-center">
-                    <div className="border border-solid border-1 border-gray-300 rounded-full mt-2 mr-3 w-10 h-10">
-                      <PhoneIcon className="m-2 text-black" />
-                    </div>
-                    <h3>
-                      Hotline:
-                      <span>(+100) 123 456 7890</span>
-                    </h3>
-                  </div>
-                </div>
-                <div className="navbar-cart">
-                  <div className="cart-items">
-                    <a className="main-btn flex items-center justify-center">
-                      <ShoppingCartIcon className="m-2" />
-                      <span className="total-items">2</span>
-                    </a>
-                    {/* Shopping Item */}
-                    <div className="shopping-item">
-                      <div className="dropdown-cart-header">
-                        <span>2 Items</span>
-                        <a href="cart.html">View Cart</a>
+            <div className={`lg:w-1/3 pr-4 pl-4 md:w-1/5 w-2/5`}>
+              <div className={`middle-right-area`}>
+                <div className="flex justify-center">
+                  <div className={`nav-hotline ${user ? "ml-16" : " ml-28"}`}>
+                    <div className="flex items-center">
+                      <div className="border border-solid border-1 border-gray-300 rounded-full mt-2 mr-3 w-10 h-10">
+                        <PhoneIcon className="m-2 text-black" />
                       </div>
-                      <ul className="shopping-list">
-                        <li>
-                          <a className="remove" title="Remove this item">
-                            <i className="lni lni-close" />
-                          </a>
-                          <div className="cart-img-head">
-                            <a className="cart-img" href="product-details.html">
-                              <img
-                                src="src/assets/images/header/cart-items/item1.jpg"
-                                alt="#"
-                              />
-                            </a>
-                          </div>
-                          <div className="content">
-                            <h4>
-                              <a href="product-details.html">
-                                Apple Watch Series 6
-                              </a>
-                            </h4>
-                            <p className="quantity">
-                              1x - <span className="amount">$99.00</span>
-                            </p>
-                          </div>
-                        </li>
-                        <li>
-                          <a className="remove" title="Remove this item">
-                            <i className="lni lni-close" />
-                          </a>
-                          <div className="cart-img-head">
-                            <a className="cart-img" href="product-details.html">
-                              <img
-                                src="src/assets/images/header/cart-items/item2.jpg"
-                                alt="#"
-                              />
-                            </a>
-                          </div>
-                          <div className="content">
-                            <h4>
-                              <a href="product-details.html">
-                                Wi-Fi Smart Camera
-                              </a>
-                            </h4>
-                            <p className="quantity">
-                              1x - <span className="amount">$35.00</span>
-                            </p>
-                          </div>
-                        </li>
-                      </ul>
-                      <div className="bottom">
-                        <div className="total">
-                          <span>Total</span>
-                          <span className="total-amount">$134.00</span>
-                        </div>
-                        <div className="button">
-                          <a
-                            href="checkout.html"
-                            className="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline animate"
-                          >
-                            Checkout
-                          </a>
-                        </div>
+                      <h3>
+                        Hotline:
+                        <span>(+100) 123 456 7890</span>
+                      </h3>
+                    </div>
+                  </div>
+
+                  {user && (
+                    <div className="navbar-cart mt-2 cursor-pointer">
+                      <div className="cart-items">
+                        <a className="main-btn flex items-center justify-center">
+                          <ShoppingCartIcon className="m-2" />
+                        </a>
                       </div>
                     </div>
-                    {/*/ End Shopping Item */}
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -239,104 +176,22 @@ const Header = () => {
                   All Categories
                 </span>
                 <ul className="sub-category">
-                  <li>
-                    <a href="product-grids.html">
-                      Electronics <i className="lni lni-chevron-right" />
-                    </a>
-                    <ul className="inner-sub-category">
-                      <li>
-                        <a href="product-grids.html">Digital Cameras</a>
-                      </li>
-                      <li>
-                        <a href="product-grids.html">Camcorders</a>
-                      </li>
-                      <li>
-                        <a href="product-grids.html">Camera Drones</a>
-                      </li>
-                      <li>
-                        <a href="product-grids.html">Smart Watches</a>
-                      </li>
-                      <li>
-                        <a href="product-grids.html">Headphones</a>
-                      </li>
-                      <li>
-                        <a href="product-grids.html">MP3 Players</a>
-                      </li>
-                      <li>
-                        <a href="product-grids.html">Microphones</a>
-                      </li>
-                      <li>
-                        <a href="product-grids.html">Chargers</a>
-                      </li>
-                      <li>
-                        <a href="product-grids.html">Batteries</a>
-                      </li>
-                      <li>
-                        <a href="product-grids.html">Cables &amp; Adapters</a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a href="product-grids.html">accessories</a>
-                  </li>
-                  <li>
-                    <a href="product-grids.html">Televisions</a>
-                  </li>
-                  <li>
-                    <a href="product-grids.html">best selling</a>
-                  </li>
-                  <li>
-                    <a href="product-grids.html">top 100 offer</a>
-                  </li>
-                  <li>
-                    <a href="product-grids.html">sunglass</a>
-                  </li>
-                  <li>
-                    <a href="product-grids.html">watch</a>
-                  </li>
-                  <li>
-                    <a href="product-grids.html">man’s product</a>
-                  </li>
-                  <li>
-                    <a href="product-grids.html">Home Audio &amp; Theater</a>
-                  </li>
-                  <li>
-                    <a href="product-grids.html">Computers &amp; Tablets </a>
-                  </li>
-                  <li>
-                    <a href="product-grids.html">Video Games </a>
-                  </li>
-                  <li>
-                    <a href="product-grids.html">Home Appliances </a>
-                  </li>
+                  {categories?.map((category: Category, i) => (
+                    <li key={i}>
+                      <div className="flex justify-center items-center">
+                        <i
+                          className="ml-4 w-8 h-8  bg-no-repeat"
+                          style={{
+                            backgroundImage: `url(${category.imageUrl})`,
+                          }}
+                        ></i>
+                        <a>{category.name}</a>
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               </div>
               {/* End Mega Category Menu */}
-              {/* Start Navbar */}
-              <nav className="relative my-2">
-                <ul className="flex">
-                  <li className="mx-4 text-black">
-                    <a href="about-us.html">About Us</a>
-                  </li>
-                  <li className="mx-4 text-black">
-                    <a href="faq.html">Faq</a>
-                  </li>
-                  <li className="mx-4 text-black">
-                    <a href="login.html">Login</a>
-                  </li>
-                  <li className="mx-4 text-black">
-                    <a href="register.html">Register</a>
-                  </li>
-                  <li className="mx-4 text-black">
-                    <a href="mail-success.html">Mail Success</a>
-                  </li>
-                  <li className="mx-4 text-black">
-                    <a href="404.html">404 Error</a>
-                  </li>
-                </ul>
-                {/* navbar collapse */}
-              </nav>
-              {/* End Navbar */}
             </div>
           </div>
           <div className="lg:w-1/3 pr-4 pl-4 md:w-1/2 w-full">
