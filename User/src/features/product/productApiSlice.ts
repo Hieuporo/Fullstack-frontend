@@ -12,6 +12,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: productInfo,
       }),
+      invalidatesTags: ["Cart"],
     }),
   }),
 });

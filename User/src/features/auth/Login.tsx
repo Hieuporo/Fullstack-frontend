@@ -1,32 +1,52 @@
-import { FormEvent, useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "./authApiSlice";
 import { setCredentials } from "./authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const dispatch = useDispatch();
   const [login, { isLoading }] = useLoginMutation();
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .required("This field cannot be left blank")
+        .matches(
+          /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+          "Please enter a valid email address"
+        ),
+      password: Yup.string()
+        .required("This field cannot be left blank")
+        .matches(
+          /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,19}$/,
+          "Password must be 7-19 characters and contain at least one letter, one number and a special character"
+        ),
+    }),
+    onSubmit: async (values) => {
+      try {
+        const userData = await login({
+          email: values.email,
+          password: values.password,
+        }).unwrap();
 
-    try {
-      const userData = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...userData }));
-      toast.success("Successfully logged in");
-      setEmail("");
-      setPassword("");
-      navigate("/");
-    } catch (err: any) {
-      toast.error(err.data.ErrorMessage);
-    }
-  };
+        dispatch(setCredentials({ ...userData }));
+
+        toast.success("Successfully logged in");
+        navigate("/");
+      } catch (err: any) {
+        toast.error(err.data.ErrorMessage);
+      }
+    },
+  });
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -47,7 +67,10 @@ const Login = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in to your account
             </h1>
-            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+            <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={formik.handleSubmit}
+            >
               <div>
                 <label
                   htmlFor="email"
@@ -57,13 +80,16 @@ const Login = () => {
                 </label>
                 <input
                   type="email"
-                  name="email"
-                  id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  name="email"
+                  id="email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
                 />
+                {formik.errors.email && (
+                  <p className="px-2 text-red-700"> {formik.errors.email} </p>
+                )}
               </div>
               <div>
                 <label
@@ -78,9 +104,12 @@ const Login = () => {
                   id="password"
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
                 />
+                {formik.errors.password && (
+                  <p className="px-2 text-red-700">{formik.errors.password} </p>
+                )}
               </div>
               <div className="flex items-center justify-between">
                 <a
@@ -98,12 +127,12 @@ const Login = () => {
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
-                <a
-                  href="#"
+                <Link
+                  to="/register"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Sign up
-                </a>
+                </Link>
               </p>
             </form>
           </div>

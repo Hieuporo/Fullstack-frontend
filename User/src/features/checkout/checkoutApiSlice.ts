@@ -1,24 +1,21 @@
 import { apiSlice } from "../../apis/apiSlice";
-import { Cart, ShippingMethod } from "../../types/index.type";
+import { Cart, Coupon, ShippingMethod } from "../../types/index.type";
 
 export const checkoutApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getCart: builder.query<Cart, void>({
       query: () => `/Cart`,
+      providesTags: ["Cart"],
     }),
     getShipping: builder.query<ShippingMethod[], void>({
       query: () => `/ShippingMethod`,
     }),
-    deleteItem: builder.query<Cart, number>({
-      query: (id) => `/Cart/${id}`,
-    }),
-
-    minusItem: builder.mutation({
-      query: (minusInfomation) => ({
-        url: "/Cart/minus",
-        method: "PUT",
-        body: minusInfomation,
+    deleteItem: builder.mutation<Cart, number>({
+      query: (id) => ({
+        url: `/Cart/${id}`,
+        method: "DELETE",
       }),
+      invalidatesTags: ["Cart"],
     }),
     plusItem: builder.mutation({
       query: (minusInfomation) => ({
@@ -26,8 +23,29 @@ export const checkoutApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: minusInfomation,
       }),
+      invalidatesTags: ["Cart"],
+    }),
+    minusItem: builder.mutation({
+      query: (minusInfomation) => ({
+        url: "/Cart/minus",
+        method: "PUT",
+        body: minusInfomation,
+      }),
+      invalidatesTags: ["Cart"],
+    }),
+    checkCoupon: builder.mutation<Coupon, string>({
+      query: (coupon) => ({
+        url: `/Coupon/GetCouponByCode/${coupon}`,
+      }),
     }),
   }),
 });
 
-export const { useGetCartQuery, useGetShippingQuery } = checkoutApiSlice;
+export const {
+  useGetCartQuery,
+  useGetShippingQuery,
+  useDeleteItemMutation,
+  useMinusItemMutation,
+  usePlusItemMutation,
+  useCheckCouponMutation,
+} = checkoutApiSlice;

@@ -1,50 +1,74 @@
-import { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { useRegisterMutation } from "./authApiSlice";
 import { toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
 const Register = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
-  const [address, setAddress] = useState<string>("");
-  const [userName, setUserName] = useState<string>("");
-  const [name, setName] = useState<string>("");
-
   const [register, { isLoading }] = useRegisterMutation();
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      name: "",
+      phoneNumber: "",
+      password: "",
+      userName: "",
+      address: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .required("This field cannot be left blank")
+        .min(4, "Must be 4 characters or more"),
+      userName: Yup.string()
+        .required("This field cannot be left blank")
+        .min(4, "Must be 4 characters or more"),
+      address: Yup.string()
+        .required("This field cannot be left blank")
+        .min(4, "Must be 12 characters or more"),
+      email: Yup.string()
+        .required("This field cannot be left blank")
+        .matches(
+          /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+          "Please enter a valid email address"
+        ),
+      password: Yup.string()
+        .required("This field cannot be left blank")
+        .matches(
+          /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,19}$/,
+          "Password must be 7-19 characters and contain at least one letter, one number and a special character"
+        ),
+      phoneNumber: Yup.string()
+        .required("This field cannot be left blank")
+        .matches(
+          /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+          "Must be a valid phone number"
+        ),
+    }),
+    onSubmit: async (values) => {
+      try {
+        await register({
+          email: values.email,
+          password: values.password,
+          phoneNumber: values.phoneNumber,
+          address: values.address,
+          userName: values.userName,
+          name: values.name,
+        }).unwrap();
 
-    try {
-      await register({
-        email,
-        password,
-        phoneNumber,
-        address,
-        userName,
-        name,
-      }).unwrap();
-
-      toast.success(
-        "To finish setting up your account, please check your email to confirm the address you provided.",
-        {
-          duration: 5000,
-        }
-      );
-
-      setAddress("");
-      setEmail("");
-      setPassword("");
-      setPhoneNumber("");
-      setName("");
-      setUserName("");
-    } catch (err: any) {
-      toast.error(err.data.ErrorMessage);
-    }
-  };
-
+        toast.success(
+          "To finish setting up your account, please check your email to confirm the address you provided.",
+          {
+            duration: 5000,
+          }
+        );
+      } catch (err: any) {
+        toast.error(err.data.ErrorMessage);
+      }
+    },
+  });
   return (
-    <div className="bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <section className="bg-gray-50 dark:bg-gray-900">
+      <div className="flex flex-col items-center justify-center px-6 py-10 mb-52 mx-auto md:h-screen lg:py-0">
         <a
           href="#"
           className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
@@ -57,13 +81,13 @@ const Register = () => {
           Flowbite
         </a>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+          <div className="p-6 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Create and account
             </h1>
             <form
               className="space-y-4 md:space-y-6 grid"
-              onSubmit={handleSubmit}
+              onSubmit={formik.handleSubmit}
             >
               <div>
                 <label
@@ -78,9 +102,12 @@ const Register = () => {
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
                 />
+                {formik.errors.email && (
+                  <p className="px-2 text-red-700"> {formik.errors.email} </p>
+                )}
               </div>
 
               <div>
@@ -92,13 +119,16 @@ const Register = () => {
                 </label>
                 <input
                   type="text"
-                  name="username"
+                  name="userName"
                   id="username"
                   placeholder="Your username"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
+                  value={formik.values.userName}
+                  onChange={formik.handleChange}
                 />
+                {formik.errors.userName && (
+                  <p className="px-2 text-red-700">{formik.errors.userName}</p>
+                )}
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -114,9 +144,12 @@ const Register = () => {
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Your name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
                   />
+                  {formik.errors.name && (
+                    <p className="px-2 text-red-700">{formik.errors.name}</p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -131,9 +164,14 @@ const Register = () => {
                     id="phoneNumber"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Your phone number"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    value={formik.values.phoneNumber}
+                    onChange={formik.handleChange}
                   />
+                  {formik.errors.phoneNumber && (
+                    <p className="px-2 text-red-700">
+                      {formik.errors.phoneNumber}
+                    </p>
+                  )}
                 </div>
               </div>
               <div>
@@ -149,9 +187,12 @@ const Register = () => {
                   id="address"
                   placeholder="Your address"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  value={formik.values.address}
+                  onChange={formik.handleChange}
                 />
+                {formik.errors.address && (
+                  <p className="px-2 text-red-700"> {formik.errors.address} </p>
+                )}
               </div>
               <div>
                 <label
@@ -166,9 +207,12 @@ const Register = () => {
                   id="password"
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
                 />
+                {formik.errors.password && (
+                  <p className="px-2 text-red-700">{formik.errors.password}</p>
+                )}
               </div>
 
               <button
@@ -179,18 +223,18 @@ const Register = () => {
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
-                <a
-                  href="#"
+                <Link
+                  to={"/login"}
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Login here
-                </a>
+                </Link>
               </p>
             </form>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

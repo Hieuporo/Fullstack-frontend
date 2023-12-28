@@ -37,6 +37,7 @@ export interface Cart {
 }
 
 export interface CartItem {
+  id: number;
   cartId: number;
   productItemId: number;
   productItem: ProductItem;
@@ -51,4 +52,11 @@ export interface ShippingMethod {
 export interface CartState {
   cart: Cart | null;
   total: number;
+}
+
+export interface Coupon {
+  id: number;
+  couponCode: string;
+  minAmount: number;
+  discountAmount: number;
 }

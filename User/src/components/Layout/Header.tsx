@@ -89,7 +89,7 @@ const Header = () => {
             <div className="lg:w-1/4 pr-4 pl-4 md:w-1/4 w-3/5">
               {/* Start Header Logo */}
               <a className="inline-block pt-1 pb-1 mr-4 text-lg whitespace-no-wrap w-48">
-                <img src="src/assets/images/logo/logo.svg" alt="Logo" />
+                <img src="./images/logo/logo.svg" alt="Logo" />
               </a>
               {/* End Header Logo */}
             </div>
@@ -149,13 +149,16 @@ const Header = () => {
                   </div>
 
                   {user && (
-                    <div className="navbar-cart mt-2 cursor-pointer">
+                    <Link
+                      to={"/user/checkout"}
+                      className="navbar-cart mt-2 cursor-pointer"
+                    >
                       <div className="cart-items">
                         <a className="main-btn flex items-center justify-center">
                           <ShoppingCartIcon className="m-2" />
                         </a>
                       </div>
-                    </div>
+                    </Link>
                   )}
                 </div>
               </div>
