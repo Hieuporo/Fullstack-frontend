@@ -38,6 +38,13 @@ export const checkoutApiSlice = apiSlice.injectEndpoints({
         url: `/Coupon/GetCouponByCode/${coupon}`,
       }),
     }),
+    createOrder: builder.mutation({
+      query: (orderInfomation) => ({
+        url: "/Order",
+        method: "POST",
+        body: orderInfomation,
+      }),
+    }),
   }),
 });
 
@@ -48,4 +55,5 @@ export const {
   useMinusItemMutation,
   usePlusItemMutation,
   useCheckCouponMutation,
+  useCreateOrderMutation,
 } = checkoutApiSlice;

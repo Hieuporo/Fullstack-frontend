@@ -3,24 +3,25 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
   useCheckCouponMutation,
+  useCreateOrderMutation,
   useGetCartQuery,
   useGetShippingQuery,
 } from "./checkoutApiSlice";
 import ProductItem from "./components/ProductItem";
-import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { Coupon } from "../../types/index.type";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
   const [checkCoupon] = useCheckCouponMutation();
+  const [createOrder] = useCreateOrderMutation();
   const { data: cart } = useGetCartQuery();
   const [shippingMethodSelect, setShippingMethodSelect] = useState<number>();
   const [shipfee, setShipfee] = useState<number>(0);
   const [couponCode, setCouponCode] = useState<string>();
   const [coupon, setCoupon] = useState<Coupon | null>();
-
+  const navigate = useNavigate();
   const [total, setTotal] = useState<number>();
-  const dispatch = useDispatch();
   const { data: shippingMethods } = useGetShippingQuery();
 
   const formik = useFormik({
@@ -32,20 +33,34 @@ const Checkout = () => {
       phoneNumber: "",
       cartItemIdList: cart?.cartItems.map((cartItem) => cartItem.id),
     },
-    // validationSchema: Yup.object({
-    //   couponId: Yup.number(),
-    //   shippingMethodId: Yup.number().required(),
-    //   customerName: Yup.string().required("This field cannot be left blank"),
-    //   address: Yup.string().required("This field cannot be left blank"),
-    //   phoneNumber: Yup.string().required("This field cannot be left blank"),
-    //   cartItemIdList: Yup.array().min(0),
-    // }),
+    validationSchema: Yup.object({
+      couponId: Yup.number(),
+      shippingMethodId: Yup.number().required(),
+      customerName: Yup.string().required("This field cannot be left blank"),
+      address: Yup.string().required("This field cannot be left blank"),
+      phoneNumber: Yup.string().required("This field cannot be left blank"),
+      cartItemIdList: Yup.array().min(0),
+    }),
     onSubmit: async (values) => {
-      console.log(values);
       try {
-        toast.success("Successfully logged in");
+        const data = await createOrder({
+          createOrderDto: {
+            couponId: values.couponId,
+            shippingMethodId: values.shippingMethodId,
+            customerName: values.customerName,
+            address: values.address,
+            phoneNumber: values.phoneNumber,
+            cartItemIdList: values.cartItemIdList,
+          },
+          stripeSetupDto: {
+            approvedUrl: "http://localhost:5173/order/",
+            cancelUrl: "http://localhost:5173/",
+          },
+        }).unwrap();
+
+        window.location.replace(data.url);
       } catch (err: any) {
-        toast.error(err.data.ErrorMessage);
+        toast.error("???????????");
       }
     },
   });
@@ -74,6 +89,10 @@ const Checkout = () => {
     try {
       if (couponCode) {
         const coupon = await checkCoupon(couponCode).unwrap();
+        if (total && coupon.minAmount > total) {
+          return toast.error(`Applies to orders over $${coupon.minAmount}`);
+        }
+        formik.setFieldValue("couponId", coupon.id);
         setCoupon(coupon);
       }
     } catch (error) {
@@ -81,10 +100,18 @@ const Checkout = () => {
     }
   };
 
+  const setShippingId = (id: number) => {
+    setShippingMethodSelect(id);
+    formik.setFieldValue("shippingMethodId", id);
+  };
+
   return (
     <>
       <div className="flex flex-col items-center border-b bg-white py-4 sm:flex-row sm:px-10 lg:px-20 xl:px-32"></div>
-      <div className="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32"
+      >
         <div className="px-4 pt-8">
           <p className="text-xl font-medium">Order Summary</p>
           <p className="text-gray-400">
@@ -101,7 +128,7 @@ const Checkout = () => {
               <div
                 key={shippingMethod.id}
                 className="relative"
-                onClick={() => setShippingMethodSelect(shippingMethod.id)}
+                onClick={() => setShippingId(shippingMethod.id)}
               >
                 <input
                   className="peer hidden"
@@ -308,12 +335,14 @@ const Checkout = () => {
                 <p className="text-sm font-medium text-gray-900">Subtotal</p>
                 <p className="font-semibold text-gray-900">${total}</p>
               </div>
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-gray-900">Coupon</p>
-                <p className="font-semibold text-gray-900">
-                  - ${coupon?.discountAmount}
-                </p>
-              </div>
+              {coupon && (
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-medium text-gray-900">Coupon</p>
+                  <p className="font-semibold text-gray-900">
+                    - ${coupon?.discountAmount}
+                  </p>
+                </div>
+              )}
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium text-gray-900">Shipping</p>
                 <p className="font-semibold text-gray-900">+ ${shipfee}</p>
@@ -336,7 +365,7 @@ const Checkout = () => {
             Place Order
           </button>
         </div>
-      </div>
+      </form>
     </>
   );
 };

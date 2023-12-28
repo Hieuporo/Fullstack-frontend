@@ -9,6 +9,9 @@ import PrivateRoutes from "./PrivateRoutes";
 import Checkout from "../features/checkout/Checkout";
 import { Category } from "@mui/icons-material";
 import { useEffect } from "react";
+import PaymentSuccess from "../features/order/PaymentSuccess";
+import Order from "../features/order/Order";
+import ProductList from "../features/product/ProductList";
 
 const Router = () => {
   const location = useLocation();
@@ -37,6 +40,14 @@ const Router = () => {
           }
         />
         <Route
+          path="/products/:categoryId/:page"
+          element={
+            <ContentLayout>
+              <ProductList />
+            </ContentLayout>
+          }
+        />
+        <Route
           path="/login"
           element={
             <ContentLayout>
@@ -60,6 +71,14 @@ const Router = () => {
             </ContentLayout>
           }
         />
+        <Route
+          path="paymentsuccess"
+          element={
+            <ContentLayout>
+              <PaymentSuccess />
+            </ContentLayout>
+          }
+        />
         <Route path="/confirmemail" element={<EmailConfirm />} />
         <Route path="/user" element={<PrivateRoutes />}>
           <Route
@@ -67,6 +86,14 @@ const Router = () => {
             element={
               <ContentLayout>
                 <Checkout />
+              </ContentLayout>
+            }
+          />
+          <Route
+            path="order"
+            element={
+              <ContentLayout>
+                <Order />
               </ContentLayout>
             }
           />

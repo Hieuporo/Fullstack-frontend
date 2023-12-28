@@ -60,3 +60,16 @@ export interface Coupon {
   minAmount: number;
   discountAmount: number;
 }
+
+export interface Order {
+  status: string;
+  discount: number;
+  orderTotal: number;
+  orderItems: Array<OrderItem>;
+  createdAt: Date;
+}
+
+export interface OrderItem {
+  quantity: number;
+  productItem: ProductItem;
+}
