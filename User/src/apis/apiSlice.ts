@@ -10,7 +10,8 @@ import { RootState } from "../stores/store";
 import { AuthState } from "../types/auth.type";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://localhost:7020/api",
+  // https://localhost:7020/api
+  baseUrl: "http://minhhieu1234-001-site1.btempurl.com/api",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;
     if (token) {

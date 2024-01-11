@@ -32,7 +32,7 @@ const Header = () => {
             <div className="lg:w-1/3 pr-4 pl-4 md:w-1/3 w-full">
               <div className="top-left">
                 <Link to={"/"} className="text-white text-base">
-                  Hieu Pro
+                  Hieu Shop
                 </Link>
               </div>
             </div>
@@ -89,7 +89,7 @@ const Header = () => {
             <div className="lg:w-1/4 pr-4 pl-4 md:w-1/4 w-3/5">
               {/* Start Header Logo */}
               <a className="inline-block pt-1 pb-1 mr-4 text-lg whitespace-no-wrap w-48">
-                <img src="./images/logo/logo.svg" alt="Logo" />
+                <img src="src/assets/images/logo/logo.svg" alt="Logo" />
               </a>
               {/* End Header Logo */}
             </div>
