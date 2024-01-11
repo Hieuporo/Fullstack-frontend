@@ -4,7 +4,7 @@ import { useConfirmEmailMutation } from "./authApiSlice";
 import toast from "react-hot-toast";
 
 const EmailConfirm = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [confirmEmail] = useConfirmEmailMutation();
   const navigate = useNavigate();
   const confirm = async () => {

@@ -1,4 +1,3 @@
-import React from "react";
 import { useGetOrderQuery } from "./orderApiSlice";
 
 const Order = () => {
@@ -37,7 +36,7 @@ const Order = () => {
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       {order.orderItems.map((orderItem, i) => (
-                        <p className="text-gray-900 whitespace-no-wrap">
+                        <p key={i} className="text-gray-900 whitespace-no-wrap">
                           {orderItem.productItem.name} x {orderItem.quantity}
                         </p>
                       ))}

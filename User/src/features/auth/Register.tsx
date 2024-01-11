@@ -4,7 +4,7 @@ import { useRegisterMutation } from "./authApiSlice";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 const Register = () => {
-  const [register, { isLoading }] = useRegisterMutation();
+  const [register] = useRegisterMutation();
 
   const formik = useFormik({
     initialValues: {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGetProductByCategoryMutation } from "./productApiSlice";
-import { Paging, Product } from "../../types/index.type";
+import { Paging } from "../../types/index.type";
 import HomeProduct from "../home/components/HomeProduct";
 
 const ProductList = () => {

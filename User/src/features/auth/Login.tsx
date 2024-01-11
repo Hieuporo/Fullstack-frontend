@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const [login, { isLoading }] = useLoginMutation();
+  const [login] = useLoginMutation();
 
   const navigate = useNavigate();
 

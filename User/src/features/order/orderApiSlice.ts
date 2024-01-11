@@ -1,5 +1,5 @@
 import { apiSlice } from "../../apis/apiSlice";
-import { Cart, Coupon, Order, ShippingMethod } from "../../types/index.type";
+import { Order } from "../../types/index.type";
 
 export const orderApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

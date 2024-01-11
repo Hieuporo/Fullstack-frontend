@@ -10,7 +10,6 @@ import {
 import ProductItem from "./components/ProductItem";
 import toast from "react-hot-toast";
 import { Coupon } from "../../types/index.type";
-import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
   const [checkCoupon] = useCheckCouponMutation();
@@ -20,7 +19,6 @@ const Checkout = () => {
   const [shipfee, setShipfee] = useState<number>(0);
   const [couponCode, setCouponCode] = useState<string>();
   const [coupon, setCoupon] = useState<Coupon | null>();
-  const navigate = useNavigate();
   const [total, setTotal] = useState<number>();
   const { data: shippingMethods } = useGetShippingQuery();
 

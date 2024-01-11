@@ -11,7 +11,6 @@ const ProductItem = ({ item }: { item: CartItem }) => {
   const [minus] = useMinusItemMutation();
   const [plus] = usePlusItemMutation();
 
-  const [quantity, setQuantity] = useState<number>(item.quantity);
   const [price, setPrice] = useState<number>(
     item.productItem.price * item.quantity
   );
