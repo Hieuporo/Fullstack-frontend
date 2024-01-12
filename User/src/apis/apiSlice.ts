@@ -11,7 +11,7 @@ import { AuthState } from "../types/auth.type";
 
 const baseQuery = fetchBaseQuery({
   // https://localhost:7020/api
-  baseUrl: "http://minhhieu1234-001-site1.btempurl.com/api",
+  baseUrl: "https://minhhieu1234-001-site1.btempurl.com/api",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;
     if (token) {
